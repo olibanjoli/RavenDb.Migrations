@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RavenDb.Migrations", "RavenDb.Migrations\RavenDb.Migrations.csproj", "{37C61AAB-9193-415A-BACC-CE665BB094C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Migrations.For.RavenDb", "RavenDb.Migrations\Migrations.For.RavenDb.csproj", "{37C61AAB-9193-415A-BACC-CE665BB094C5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RavenDb.Migrations.Playground", "RavenDb.Migrations.Playground\RavenDb.Migrations.Playground.csproj", "{A073115D-C3CB-4579-9577-EAFE30C7A9EF}"
 EndProject

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Migrations.For.RavenDb.Documents;
 using Raven.Client.Documents;
-using RavenDb.Migrations.Documents;
 
-namespace RavenDb.Migrations
+namespace Migrations.For.RavenDb
 {
     public class Migrator
     {

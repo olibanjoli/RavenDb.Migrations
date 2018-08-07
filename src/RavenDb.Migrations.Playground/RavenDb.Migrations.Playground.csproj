@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RavenDb.Migrations\RavenDb.Migrations.csproj" />
+    <ProjectReference Include="..\RavenDb.Migrations\Migrations.For.RavenDb.csproj" />
   </ItemGroup>
 
 </Project>

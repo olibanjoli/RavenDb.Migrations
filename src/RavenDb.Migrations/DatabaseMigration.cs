@@ -1,6 +1,6 @@
 ﻿using Raven.Client.Documents;
 
-namespace RavenDb.Migrations
+namespace Migrations.For.RavenDb
 {
     public abstract class DatabaseMigration
     {

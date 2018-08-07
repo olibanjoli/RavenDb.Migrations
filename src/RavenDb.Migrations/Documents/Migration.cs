@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RavenDb.Migrations.Documents
+namespace Migrations.For.RavenDb.Documents
 {
     public class Migration
     {

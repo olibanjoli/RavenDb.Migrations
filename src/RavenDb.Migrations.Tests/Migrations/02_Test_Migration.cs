@@ -1,4 +1,5 @@
-﻿using Raven.Client.Documents;
+﻿using Migrations.For.RavenDb;
+using Raven.Client.Documents;
 
 namespace RavenDb.Migrations.Tests.Migrations
 {

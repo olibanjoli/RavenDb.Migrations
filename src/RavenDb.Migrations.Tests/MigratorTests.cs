@@ -1,6 +1,7 @@
 using System.Linq;
+using Migrations.For.RavenDb;
+using Migrations.For.RavenDb.Documents;
 using Raven.TestDriver;
-using RavenDb.Migrations.Documents;
 using RavenDb.Migrations.Tests.Infrastructure;
 using RavenDb.Migrations.Tests.Migrations;
 using Shouldly;
