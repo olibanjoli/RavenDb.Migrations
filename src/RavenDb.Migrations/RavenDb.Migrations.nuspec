@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>RavenDb.Migrations.dll</id>
-    <version>1.0.0</version>
+    <id>RavenDb.Migrations</id>
+    <version>1.0.0-pre.1</version>
     <authors>olibanjoli</authors>
     <owners>olibanjoli</owners>
     <licenseUrl>https://github.com/olibanjoli/RavenDb.Migrations</licenseUrl>
@@ -15,7 +15,7 @@
     <copyright>Copyright 2018</copyright>
     <tags>ravendb migrations database nosql doc db</tags>
     <dependencies>
-      <dependency id="RavenDB.Client" version="[4.0.0)" exclude="Build,Analyzers" />
+      <dependency id="RavenDB.Client" version="[4,5)" exclude="Build,Analyzers" />
     </dependencies>
   </metadata>
 </package>
