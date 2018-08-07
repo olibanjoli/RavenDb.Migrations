@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Migrations.For.RavenDb.Documents;
+using Migrations.For.RavenDb.Logging;
 using Raven.Client.Documents;
 
 namespace Migrations.For.RavenDb
 {
     public class Migrator
     {
+        private static readonly ILog Log = LogProvider.GetCurrentClassLogger();
+
         private readonly IDocumentStore store;
 
         public Migrator(IDocumentStore store)
@@ -18,6 +21,10 @@ namespace Migrations.For.RavenDb
 
         public void Run(Assembly migrations)
         {
+            Log.Info("starting migration");
+
+            Log.Debug($"discovering migrations from assembly {migrations.FullName}");
+
             var migrationClasses = migrations.GetLoadableTypes()
                 .Where(p => typeof(DatabaseMigration).IsAssignableFrom(p) &&
                             p.IsAbstract == false &&
@@ -25,11 +32,19 @@ namespace Migrations.For.RavenDb
                 .OrderBy(o => o.Name)
                 .ToList();
 
+            migrationClasses.ForEach(m => Log.Debug($" - {m.FullName}"));
+            Log.Debug($" => {migrationClasses.Count} migrations found");
+
             IDictionary<string, Migration> executedMigrations;
 
             using (var session = this.store.OpenSession())
             {
-                executedMigrations = session.Query<Migration>().ToList().ToDictionary(k => k.FullName);
+                var executedMigrationsList = session.Query<Migration>().OrderBy(o => o.FullName).ToList();
+                executedMigrations = executedMigrationsList.ToDictionary(k => k.FullName);
+
+                Log.Debug($"the following migrations are already executed on the target:");
+                executedMigrationsList.ForEach(m => Log.Debug($" - {m.FullName}"));
+                Log.Debug($" => {executedMigrationsList.Count} executed migrations found");
             }
 
             foreach (var migrationClass in migrationClasses)
@@ -46,6 +61,8 @@ namespace Migrations.For.RavenDb
                     Start = DateTime.UtcNow
                 };
 
+                Log.Info($"executing migration {executedMigration.Id}");
+
                 using (var session = this.store.OpenSession())
                 {
                     session.Store(executedMigration);
@@ -56,6 +73,8 @@ namespace Migrations.For.RavenDb
 
                 instance.Up(store);
 
+                Log.Info($"migration {executedMigration.Id} finished, writing end date to journal entry...");
+
                 using (var session = this.store.OpenSession())
                 {
                     executedMigration.End = DateTime.UtcNow;
@@ -63,6 +82,8 @@ namespace Migrations.For.RavenDb
                     session.Store(executedMigration);
                     session.SaveChanges();
                 }
+
+                Log.Info($"migration {executedMigration.Id} done.");
             }
         }
     }
