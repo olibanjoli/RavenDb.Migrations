@@ -2,6 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Title>Migrations for RavenDB</Title>
+    <Authors>olibanjoli</Authors>
+    <Description>Migrations for RavenDB</Description>
+    <Copyright>Copyright 2020</Copyright>
+    <PackageProjectUrl>https://github.com/olibanjoli/RavenDb.Migrations</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/olibanjoli/RavenDb.Migrations/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/olibanjoli/RavenDb.Migrations/master/logo.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/olibanjoli/RavenDb.Migrations</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>ravendb migrations nosql database db document</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
