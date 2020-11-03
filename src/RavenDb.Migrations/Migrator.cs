@@ -51,6 +51,15 @@ namespace Migrations.For.RavenDb
             {
                 if (executedMigrations.ContainsKey(migrationClass.FullName))
                 {
+                    var migration = executedMigrations[migrationClass.FullName];
+
+                    if (migration.End == null)
+                    {
+                        Log.Error($"unfinished migration detected in journal. will not continue to migrate. manual intervention required. 1) set and end value for the migration in order to skip the migration and continue with the next one. or 2) delete the migration document to retry the migration. (document id: '{migration.Id}')");
+                        Environment.Exit(1);
+                    }
+                    
+                    Log.Debug($"skipping migration {migrationClass.Name} - already executed");
                     continue;
                 }
 
