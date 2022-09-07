@@ -13,11 +13,15 @@
     <RepositoryUrl>https://github.com/olibanjoli/RavenDb.Migrations</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>ravendb migrations nosql database db document</PackageTags>
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LibLog" Version="5.0.2" />
-    <PackageReference Include="RavenDB.Client" Version="4.0.6" />
+    <PackageReference Include="LibLog" Version="5.0.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="RavenDB.Client" Version="5.4.2" />
   </ItemGroup>
 
 </Project>

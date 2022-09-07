@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Migrations.For.RavenDb.Documents;
 using Migrations.For.RavenDb.Logging;
 using Raven.Client.Documents;
@@ -19,7 +20,7 @@ namespace Migrations.For.RavenDb
             this.store = store;
         }
 
-        public void Run(Assembly migrations)
+        public async Task Run(Assembly migrations)
         {
             Log.Info("starting migration");
 
@@ -80,19 +81,46 @@ namespace Migrations.For.RavenDb
 
                 var instance = (DatabaseMigration)Activator.CreateInstance(migrationClass);
 
-                instance.Up(store);
+                try
+                {
+                    // ReSharper disable once MethodHasAsyncOverload
+                    instance.Up(store);
+                    await instance.UpAsync(store);
+                }
+                catch (Exception e)
+                {
+                    PersistError(executedMigration, e);
+                    throw;
+                }
 
                 Log.Info($"migration {executedMigration.Id} finished, writing end date to journal entry...");
 
                 using (var session = this.store.OpenSession())
                 {
                     executedMigration.End = DateTime.UtcNow;
+                    
+                    var duration = executedMigration.End.Value.Subtract(executedMigration.Start.Value);
+                    executedMigration.DurationInSeconds = duration.TotalSeconds;
+                    executedMigration.DurationInMinutes = duration.TotalMinutes;
 
                     session.Store(executedMigration);
                     session.SaveChanges();
                 }
 
                 Log.Info($"migration {executedMigration.Id} done.");
+            }
+        }
+
+        private void PersistError(Migration executedMigration, Exception e)
+        {
+            using (var session = store.OpenSession())
+            {
+                session.Store(executedMigration);
+
+                executedMigration.Exception = e;
+                executedMigration.ExceptionTime = DateTime.UtcNow;
+
+                session.SaveChanges();
             }
         }
     }

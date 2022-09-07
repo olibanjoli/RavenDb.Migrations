@@ -1,24 +1,24 @@
 using System.Linq;
+using System.Threading.Tasks;
 using Migrations.For.RavenDb;
 using Migrations.For.RavenDb.Documents;
 using Raven.TestDriver;
-using RavenDb.Migrations.Tests.Infrastructure;
 using RavenDb.Migrations.Tests.Migrations;
 using Shouldly;
 using Xunit;
 
 namespace RavenDb.Migrations.Tests
 {
-    public class MigratorTests : RavenTestDriver<RavenDBLocator>
+    public class MigratorTests : RavenTestDriver
     {
         [Fact]
-        public void Executing_Migration_Creates_Journal_Entry()
+        public async Task Executing_Migration_Creates_Journal_Entry()
         {
             var store = GetDocumentStore();
 
             var migrator = new Migrator(store);
 
-            migrator.Run(typeof(MigratorTests).Assembly);
+            await migrator.Run(typeof(MigratorTests).Assembly);
 
             WaitForIndexing(store);
 
