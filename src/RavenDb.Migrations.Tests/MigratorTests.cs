@@ -2,6 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Migrations.For.RavenDb;
 using Migrations.For.RavenDb.Documents;
+using Raven.Embedded;
 using Raven.TestDriver;
 using RavenDb.Migrations.Tests.Migrations;
 using Shouldly;
@@ -11,6 +12,20 @@ namespace RavenDb.Migrations.Tests
 {
     public class MigratorTests : RavenTestDriver
     {
+        static MigratorTests()
+        {
+            // RavenDB 7 makes the embedded/test server require a license by default.
+            // No license is configured for the test run, so disable the strict check
+            // (the documented approach for RavenTestDriver without a license).
+            ConfigureServer(new TestServerOptions
+            {
+                Licensing = new ServerOptions.LicensingOptions
+                {
+                    ThrowOnInvalidOrMissingLicense = false
+                }
+            });
+        }
+
         [Fact]
         public async Task Executing_Migration_Creates_Journal_Entry()
         {
